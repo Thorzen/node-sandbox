@@ -27,8 +27,18 @@ if (shell.which('git'))
 }
 
 shell.touch('foo.txt'); //Create foo.txt.
-shell.echo('this is a test').to('bar.txt'); //Write message to bar.txt.
+shell.echo('this is a test\nbut this is too\nI am the tail').to('bar.txt'); //Write message to bar.txt.
+
+var tailOfBar = shell.tail({'-n': 2}, 'bar.txt').toString();
+var headOfBar = shell.head({'-n': 1}, 'bar.txt').toString();
+console.log(`${tailOfBar}${headOfBar}`);
+
 shell.cat('bar.txt').to('foo.txt'); //Same contents now.
+
+let names = ['phil', 'jack', 'eric'];
+shell.echo(names.join('\n')).to('names.txt');
+var phil = shell.grep('phil', 'names.txt');
+console.log(`phil is ${phil}`);
 
 var files = shell.ls();
 shell.echo(files.toString());
