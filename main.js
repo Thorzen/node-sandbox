@@ -9,22 +9,22 @@ function reverseString(input) {
 shell.mkdir('test');
 shell.cd('test');
 
-shell.touch('.gitlog');
 if (shell.which('git'))
 {
+    let gitLogFileName = '.gitlog';
     shell.exec('git log --oneline', { silent: true }, (code, stdout, stderr) => {
         let lines = stdout.split('\n');
         //Lines of git log reversed and in capital, because why not?
         lines = lines.map(line => reverseString(line).toUpperCase());
-        shell.echo(lines.join('\n')).toEnd('.gitlog');
+        shell.echo(lines.join('\n')).to(gitLogFileName);
+        shell.echo(reverseString('Reverse git log created by Thorzen')).toEnd(gitLogFileName);
 
         //Now print them back in the right order from, but read from the file.
-        let gitLines = shell.cat('.gitlog').split('\n');
+        let gitLines = shell.cat(gitLogFileName).split('\n');
         gitLines = gitLines.map(reverseString);
         shell.echo(gitLines.join('\n'));
     });
 }
-
 
 shell.touch('foo.txt'); //Create foo.txt.
 shell.echo('this is a test').to('bar.txt'); //Write message to bar.txt.
